@@ -1,0 +1,19 @@
+server:
+  host: localhost
+  port: 9000
+  read-timeout: 10s
+  write-timeout: 10s
+  shutdown-timeout: 3s
+
+database:
+  host: localhost
+  port: 3306
+
+  max-open-connection: 10
+  max-idle: 2
+  max-lifetime: 0s
+
+kyc-client:
+  base-url: http://e-kyc.example.com/api/ekyc
+  api-key: secret
+  app-id: xyz

@@ -3,6 +3,7 @@ package mysql
 import (
 	"database/sql"
 	"fmt"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -21,6 +22,12 @@ func WithMaxOpenConns(maxOpenConns int) Option {
 	}
 }
 
+func WithMaxLifetimeConn(connMaxLifetime time.Duration) Option {
+	return func(db *sql.DB) {
+		db.SetConnMaxLifetime(connMaxLifetime)
+	}
+}
+
 func DataSource(username, password, host string, port int, databaseName string) string {
 	dataSource := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s",
 		username, password, host, port, databaseName)
@@ -29,6 +36,7 @@ func DataSource(username, password, host string, port int, databaseName string) 
 
 func MustNew(source string, opts ...Option) *sql.DB {
 
+	fmt.Println(source)
 	db, err := sql.Open("mysql", source)
 	if err != nil {
 		panic(err)

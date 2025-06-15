@@ -101,3 +101,11 @@ func Cause(err error) error {
 		err = wrappedErr
 	}
 }
+
+func SentinelError(err error) *sentinelError {
+	var sentinelErr *sentinelError
+	if errors.As(err, &sentinelErr) {
+		return sentinelErr
+	}
+	return nil
+}

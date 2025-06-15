@@ -13,18 +13,38 @@ type Doer interface {
 type HTTPClient struct {
 	cl      Doer
 	BaseURL string
+	apiKey  string
+	appID   string
 }
 
 type HTTPClientMock struct {
 	doer Doer
 }
 
-func NewClient() *HTTPClient {
-	return &HTTPClient{cl: http.DefaultClient}
+func NewClient(baseURL, apiKey, appID string) *HTTPClient {
+	return &HTTPClient{
+		cl:      http.DefaultClient,
+		BaseURL: baseURL,
+		apiKey:  apiKey,
+		appID:   appID,
+	}
 }
 
-func NewClientWithHTTPClient(cl *http.Client) *HTTPClient {
-	return &HTTPClient{cl: cl}
+func NewClientWithHTTPClient(cl *http.Client, baseURL, apiKey, appID string) *HTTPClient {
+	return &HTTPClient{
+		cl:      http.DefaultClient,
+		BaseURL: baseURL,
+		apiKey:  apiKey,
+		appID:   appID,
+	}
+}
+
+func (c *HTTPClient) GetAPIKey() string {
+	return c.apiKey
+}
+
+func (c *HTTPClient) GetAPIID() string {
+	return c.appID
 }
 
 func (c *HTTPClient) Get(url string, options ...Option) (*http.Response, error) {

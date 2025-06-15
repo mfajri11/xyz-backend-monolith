@@ -16,8 +16,8 @@ type ValidateUserReq struct {
 	BirthOfPlace    string `json:"birth_of_place"`
 	BirthOfDate     string `json:"birth_of_date"`
 	Salary          string `json:"salary"`
-	NationalIDPhoto []byte
-	UserPhoto       []byte
+	NationalIDPhoto []byte `json:"national_id_photo"`
+	UserPhoto       []byte `json:"user_photo"`
 }
 
 type KYCValidateNationalIDReq struct {
@@ -64,4 +64,30 @@ type KYCValidatePhotoResp struct {
 	Data    struct {
 		Status string `json:"status"`
 	}
+}
+
+type CreateLoanReq struct {
+	NationalID      string  `json:"national_id"`
+	LegalName       string  `json:"legal_name"`
+	ContractNumber  string  `json:"contract_number"`
+	Amount          float64 `json:"amount"`
+	DownPayment     float64 `json:"down_payment"`
+	OTRAmount       float64
+	PrincipalAmount float64
+	AssetName       string `json:"asset_name"`
+	LoanTypeID      int    `json:"loan_type_id"`
+	LimitTypeID     int    `json:"limit_type_id"`
+	Status          string `json:"status"`
+	StartDate       string `json:"start_date"`
+	InterestRate    int    `json:"interest_rate"`
+	NationalIDPhoto []byte `json:"national_id_photo"`
+	UserPhoto       []byte `json:"user_photo"`
+	Salary          string `json:"salary"`
+	BirthOfDate     string `json:"birth_of_date"`
+}
+
+type GeneralResponse struct {
+	Message string      `json:"message"`
+	Success bool        `json:"success"`
+	Data    interface{} `json:"data"`
 }

@@ -15,5 +15,5 @@ type UserRepository interface {
 }
 
 type UserService interface {
-	ValidateAndUpdateToValidData(ctx context.Context, user domain.UserEntity)
+	ValidateData(ctx context.Context, req domain.ValidateUserReq) (bool, error)
 }

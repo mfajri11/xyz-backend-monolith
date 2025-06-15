@@ -13,7 +13,7 @@ func NewSQLNullableFloat64(f float64) sql.NullFloat64 {
 }
 
 func NewSQLNUllableTime(s string) (sql.NullTime, error) {
-	t, err := time.Parse(time.RFC3339, s)
+	t, err := time.Parse(time.DateOnly, s)
 	if err != nil {
 		return sql.NullTime{}, err
 	}
@@ -21,4 +21,30 @@ func NewSQLNUllableTime(s string) (sql.NullTime, error) {
 		Time:  t,
 		Valid: true,
 	}, err
+}
+
+// for testing purpose
+func MustNewSQLNUllableTime(s string) sql.NullTime {
+	t, err := time.Parse(time.DateOnly, s)
+	if err != nil {
+		panic(err)
+	}
+	return sql.NullTime{
+		Time:  t,
+		Valid: true,
+	}
+}
+
+func NewSQLNUllableInt16(v int16) sql.NullInt16 {
+	return sql.NullInt16{
+		Int16: v,
+		Valid: true,
+	}
+}
+
+func NewSQLNUllableString(s string) sql.NullString {
+	return sql.NullString{
+		String: s,
+		Valid:  true,
+	}
 }
