@@ -2,12 +2,14 @@ package apperror
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 )
 
 var (
 	ErrInternalServerError = &sentinelError{statusCode: http.StatusInternalServerError, message: "oops! something went wrong"}
 	ErrNotFound            = &sentinelError{statusCode: http.StatusNotFound, message: "resource not found"}
+	ErrBadRequest          = &sentinelError{statusCode: http.StatusBadRequest, message: "bad request"}
 )
 
 type APIError interface {
@@ -68,10 +70,26 @@ func (e sentinelWrappedError) Cause() error {
 	}
 }
 
-func WrapError(err error, sentinel *sentinelError, overrideMessage string) error {
+func WrapError(err error, sentinel *sentinelError) error {
+	if err == nil {
+		return nil
+	}
+
+	if sentinel == nil {
+		sentinel = ErrInternalServerError
+	}
+
+	var apiErr APIError
+	if errors.As(err, &apiErr) {
+		return fmt.Errorf("%w: %w", err, sentinel)
+	}
 
 	return sentinelWrappedError{err: err, sentinel: sentinel}
 
+}
+
+func WrapErrorWithCode(err error, code int, message string) error {
+	return WrapError(err, &sentinelError{statusCode: code, message: message})
 }
 
 func Cause(err error) error {

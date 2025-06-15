@@ -6,8 +6,17 @@ import (
 	"net/http"
 )
 
+type Doer interface {
+	Do(*http.Request) (*http.Response, error)
+}
+
 type HTTPClient struct {
-	cl *http.Client
+	cl      Doer
+	BaseURL string
+}
+
+type HTTPClientMock struct {
+	doer Doer
 }
 
 func NewClient() *HTTPClient {
